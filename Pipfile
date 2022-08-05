@@ -8,10 +8,14 @@ pylint = "*"
 setuptools = "*"
 wheel = "*"
 twine = "*"
+psycopg2-binary = "*"
+tox = "*"
+tox-docker = "*"
 
 [packages]
-django = ">=1.11"
+django = ">=1.11,<4.1"
 celery = {extras = ["redis"],version = ">=4.2"}
 
+
 [requires]
-python_version = "3.7"
+python_version = "3.8"
