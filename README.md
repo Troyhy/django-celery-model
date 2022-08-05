@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/thenewguy/django-celery-model.svg?branch=production)](https://travis-ci.org/thenewguy/django-celery-model)
+<!-- [![Build Status](https://travis-ci.org/thenewguy/django-celery-model.svg?branch=production)](https://travis-ci.org/thenewguy/django-celery-model) -->
+[![Build Status](https://app.travis-ci.com/Troyhy/django-celery-model.svg?branch=devel)](https://app.travis-ci.com/github/Troyhy/django-celery-mode)
 
 [django-celery-model](https://github.com/mback2k/django-celery-model) is an
 extension to [Celery](https://github.com/celery/celery) which adds support
