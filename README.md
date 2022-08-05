@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/thenewguy/django-celery-model.svg?branch=production)](https://travis-ci.org/thenewguy/django-celery-model)
+<!-- [![Build Status](https://travis-ci.org/thenewguy/django-celery-model.svg?branch=production)](https://travis-ci.org/thenewguy/django-celery-model) -->
+[![Build Status](https://app.travis-ci.com/Troyhy/django-celery-model.svg?branch=devel)](https://app.travis-ci.com/github/Troyhy/django-celery-mode)
 
 [django-celery-model](https://github.com/mback2k/django-celery-model) is an
 extension to [Celery](https://github.com/celery/celery) which adds support
@@ -89,6 +90,19 @@ Filter your Django model based upon asynchronous tasks:
     MyModel.objects.without_successful_tasks()
     MyModel.objects.without_running_tasks()
     MyModel.objects.without_ready_tasks()
+
+Developing
+-----------
+Create pipenv and install pre-commit hooks
+
+    pipenv --python 3.8
+    pipenv install
+    pre-commit install
+
+when committing pre-commit will run checks, to run checks manually use:
+
+    pre-commit run -a
+
 
 License
 -------
