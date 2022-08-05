@@ -12,7 +12,7 @@ Install the latest version from pypi.python.org:
 
 Install the development version by cloning the source from github.com:
 
-    pip install git+https://github.com/mback2k/django-celery-model.git
+    pip install git+https://github.com/Troyhy/django-celery-model.git
 
 Configuration
 -------------
