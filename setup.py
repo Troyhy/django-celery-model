@@ -10,6 +10,7 @@ from djcelery_model import __version__ as version
 from djcelery_model import __doc__ as doc
 import os
 
+
 def read_file(filename):
     """Read a file into a string"""
     path = os.path.abspath(os.path.dirname(__file__))
@@ -19,6 +20,7 @@ def read_file(filename):
             return fh.read()
     except IOError:
         return ''
+
 
 setup(
     name='django-celery-model',

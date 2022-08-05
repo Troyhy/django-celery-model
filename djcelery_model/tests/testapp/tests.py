@@ -47,35 +47,38 @@ class SignalTests(TestCase):
 class TestAppIntegrationTests(TestCase):
     def test_model_is_taskmixin(self):
         self.assertIsInstance(JPEGFile(), TaskMixin)
-    
+
 
 class TestAppCeleryTests(CeleryTestCase):
     def test_state_properties(self):
         jpeg = JPEGFile.objects.create(
-            file=File(open(finders.find('testapp/flower.jpg'), 'rb'), name='flower.jpg')
+            file=File(
+                open(finders.find('testapp/flower.jpg'), 'rb'),
+                name='flower.jpg',
+            )
         )
-        
+
         self.assertFalse(jpeg.has_running_task)
         self.assertFalse(jpeg.has_ready_task)
-        
+
         result = jpeg.apply_async(calculate_etag, [jpeg.pk])
         self.assertTrue(jpeg.has_running_task)
         self.assertFalse(jpeg.has_ready_task)
         self.assertFalse(result.ready())
-        
+
         result.get(timeout=10)
         self.assertTrue(result.ready())
-        
+
         # not the greatest way to wait for async stuff to happen, but we need
         # the signals to complete before testing for side effects
         sleep(3)
-        
+
         self.assertEqual(jpeg.etag, '')
         self.assertFalse(jpeg.has_running_task)
         self.assertTrue(jpeg.has_ready_task)
-        
+
         jpeg.refresh_from_db()
-        
+
         self.assertEqual(jpeg.etag, '80b098e6cd95b9901fa29799d48731433dfaeab0')
         self.assertFalse(jpeg.has_running_task)
         self.assertTrue(jpeg.has_ready_task)
@@ -84,20 +87,23 @@ class TestAppCeleryTests(CeleryTestCase):
         started_at = timezone.now()
         sleep(1)
         jpeg = JPEGFile.objects.create(
-            file=File(open(finders.find('testapp/flower.jpg'), 'rb'), name='flower.jpg')
+            file=File(
+                open(finders.find('testapp/flower.jpg'), 'rb'),
+                name='flower.jpg',
+            )
         )
         result = jpeg.apply_async(calculate_etag, [jpeg.pk])
         jpeg.refresh_from_db()
         taskmeta = jpeg.tasks.filter(task_id=result.id).first()
         self.assertTrue(taskmeta)
-        
+
         updated_at = taskmeta.updated
         self.assertIsInstance(updated_at, datetime.datetime)
         self.assertGreater(updated_at, started_at)
-        
+
         result.get(timeout=10)
         self.assertTrue(result.ready())
-        
+
         # not the greatest way to wait for async stuff to happen, but we need
         # the signals to complete before testing for side effects
         sleep(3)

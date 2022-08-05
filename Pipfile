@@ -11,6 +11,7 @@ twine = "*"
 psycopg2-binary = "*"
 tox = "*"
 tox-docker = "*"
+pre-commit = "*"
 
 [packages]
 django = ">=1.11,<4.1"

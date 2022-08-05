@@ -1,3 +1,4 @@
+
 all: Pipfile.lock dev-requirements.txt
 
 Pipfile.lock: Pipfile
@@ -11,3 +12,6 @@ build: setup.py
 
 publish: dist
 	pipenv run twine upload -s -i 2BCE098759303489D895D61D128358963026398E dist/*
+
+
+.PHONY: all

@@ -18,9 +18,15 @@ except ImportError:
 
 try:
     # Django >= 1.7
-    from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+    from django.contrib.contenttypes.fields import (
+        GenericForeignKey,
+        GenericRelation,
+    )
 except ImportError:
-    from django.contrib.contenttypes.generic import GenericForeignKey, GenericRelation
+    from django.contrib.contenttypes.generic import (
+        GenericForeignKey,
+        GenericRelation,
+    )
 
 from celery.result import AsyncResult
 from celery.utils import uuid
@@ -32,13 +38,14 @@ from .signals import post_bulk_update
 class ModelTaskMetaState(object):
     PENDING = 0
     STARTED = 1
-    RETRY   = 2
+    RETRY = 2
     FAILURE = 3
     SUCCESS = 4
 
     @classmethod
     def lookup(cls, state):
         return getattr(cls, state)
+
 
 class ModelTaskMetaFilterMixin(object):
     def pending(self):
@@ -57,16 +64,22 @@ class ModelTaskMetaFilterMixin(object):
         return self.filter(state=ModelTaskMetaState.SUCCESS)
 
     def running(self):
-        return self.filter(Q(state=ModelTaskMetaState.PENDING)|
-                           Q(state=ModelTaskMetaState.STARTED)|
-                           Q(state=ModelTaskMetaState.RETRY))
+        return self.filter(
+            Q(state=ModelTaskMetaState.PENDING)
+            | Q(state=ModelTaskMetaState.STARTED)
+            | Q(state=ModelTaskMetaState.RETRY)
+        )
 
     def ready(self):
-        return self.filter(Q(state=ModelTaskMetaState.FAILURE)|
-                           Q(state=ModelTaskMetaState.SUCCESS))
+        return self.filter(
+            Q(state=ModelTaskMetaState.FAILURE)
+            | Q(state=ModelTaskMetaState.SUCCESS)
+        )
+
 
 class ModelTaskMetaQuerySet(ModelTaskMetaFilterMixin, QuerySet):
     pass
+
 
 class ModelTaskMetaManager(ModelTaskMetaFilterMixin, models.Manager):
     use_for_related_fields = True
@@ -74,15 +87,16 @@ class ModelTaskMetaManager(ModelTaskMetaFilterMixin, models.Manager):
     def get_queryset(self):
         return ModelTaskMetaQuerySet(self.model, using=self._db)
 
+
 @python_2_unicode_compatible
 class ModelTaskMeta(models.Model):
     class Meta:
         unique_together = ('content_type', 'object_id', 'task_id')
-    
+
     STATES = (
         (ModelTaskMetaState.PENDING, 'PENDING'),
         (ModelTaskMetaState.STARTED, 'STARTED'),
-        (ModelTaskMetaState.RETRY,   'RETRY'),
+        (ModelTaskMetaState.RETRY, 'RETRY'),
         (ModelTaskMetaState.FAILURE, 'FAILURE'),
         (ModelTaskMetaState.SUCCESS, 'SUCCESS'),
     )
@@ -91,8 +105,9 @@ class ModelTaskMeta(models.Model):
     object_id = models.IntegerField(db_index=True)
     content_object = GenericForeignKey()
     task_id = models.CharField(max_length=255, db_index=True)
-    state = models.PositiveIntegerField(choices=STATES,
-                                        default=ModelTaskMetaState.PENDING)
+    state = models.PositiveIntegerField(
+        choices=STATES, default=ModelTaskMetaState.PENDING
+    )
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True)
 
@@ -132,13 +147,17 @@ class TaskFilterMixin(object):
         return self.filter(tasks__state=ModelTaskMetaState.SUCCESS)
 
     def with_running_tasks(self):
-        return self.filter(Q(tasks__state=ModelTaskMetaState.PENDING)|
-                           Q(tasks__state=ModelTaskMetaState.STARTED)|
-                           Q(tasks__state=ModelTaskMetaState.RETRY))
+        return self.filter(
+            Q(tasks__state=ModelTaskMetaState.PENDING)
+            | Q(tasks__state=ModelTaskMetaState.STARTED)
+            | Q(tasks__state=ModelTaskMetaState.RETRY)
+        )
 
     def with_ready_tasks(self):
-        return self.filter(Q(tasks__state=ModelTaskMetaState.FAILURE)|
-                           Q(tasks__state=ModelTaskMetaState.SUCCESS))
+        return self.filter(
+            Q(tasks__state=ModelTaskMetaState.FAILURE)
+            | Q(tasks__state=ModelTaskMetaState.SUCCESS)
+        )
 
     def without_tasks(self):
         return self.exclude(tasks__state__isnull=False)
@@ -159,22 +178,29 @@ class TaskFilterMixin(object):
         return self.exclude(tasks__state=ModelTaskMetaState.SUCCESS)
 
     def without_running_tasks(self):
-        return self.exclude(Q(tasks__state=ModelTaskMetaState.PENDING)|
-                            Q(tasks__state=ModelTaskMetaState.STARTED)|
-                            Q(tasks__state=ModelTaskMetaState.RETRY))
+        return self.exclude(
+            Q(tasks__state=ModelTaskMetaState.PENDING)
+            | Q(tasks__state=ModelTaskMetaState.STARTED)
+            | Q(tasks__state=ModelTaskMetaState.RETRY)
+        )
 
     def without_ready_tasks(self):
-        return self.exclude(Q(tasks__state=ModelTaskMetaState.FAILURE)|
-                            Q(tasks__state=ModelTaskMetaState.SUCCESS))
+        return self.exclude(
+            Q(tasks__state=ModelTaskMetaState.FAILURE)
+            | Q(tasks__state=ModelTaskMetaState.SUCCESS)
+        )
+
 
 class TaskQuerySet(TaskFilterMixin, QuerySet):
     pass
+
 
 class TaskManager(TaskFilterMixin, models.Manager):
     use_for_related_fields = True
 
     def get_queryset(self):
         return TaskQuerySet(self.model, using=self._db)
+
 
 class TaskMixin(models.Model):
     tasks = GenericRelation(ModelTaskMeta)
@@ -229,7 +255,12 @@ def forget_if_ready(async_result):
 def perform_update(task_id, **kwargs):
     kwargs.setdefault('updated', timezone.now())
     count = ModelTaskMeta.objects.filter(task_id=task_id).update(**kwargs)
-    post_bulk_update.send(sender=ModelTaskMeta, task_id=task_id, count=count, update_kwargs=kwargs)
+    post_bulk_update.send(
+        sender=ModelTaskMeta,
+        task_id=task_id,
+        count=count,
+        update_kwargs=kwargs,
+    )
 
 
 @signals.after_task_publish.connect
@@ -237,20 +268,24 @@ def handle_after_task_publish(sender=None, body=None, **kwargs):
     if body and 'id' in body:
         perform_update(body['id'], state=ModelTaskMetaState.PENDING)
 
+
 @signals.task_prerun.connect
 def handle_task_prerun(sender=None, task_id=None, **kwargs):
     if task_id:
         perform_update(task_id, state=ModelTaskMetaState.STARTED)
+
 
 @signals.task_postrun.connect
 def handle_task_postrun(sender=None, task_id=None, state=None, **kwargs):
     if task_id and state:
         perform_update(task_id, state=ModelTaskMetaState.lookup(state))
 
+
 @signals.task_failure.connect
 def handle_task_failure(sender=None, task_id=None, **kwargs):
     if task_id:
         perform_update(task_id, state=ModelTaskMetaState.FAILURE)
+
 
 @signals.task_revoked.connect
 def handle_task_revoked(sender=None, request=None, **kwargs):
