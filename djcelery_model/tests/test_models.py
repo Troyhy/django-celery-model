@@ -130,7 +130,8 @@ class MultiModelStateUpdateTests(SetUpMixin, CeleryTestCase):
 
     @unittest.expectedFailure
     def test_revoked(self):
-        '''this test is passing locally but failing on travis - investigation required'''
+        '''this test is passing locally but
+        failing on travis - investigation required'''
         result = retry_forever.apply_async(task_id=self.task_id)
         time.sleep(1)
         result.revoke(terminate=True, wait=True, timeout=2)

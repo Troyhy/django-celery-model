@@ -90,6 +90,19 @@ Filter your Django model based upon asynchronous tasks:
     MyModel.objects.without_running_tasks()
     MyModel.objects.without_ready_tasks()
 
+Developing
+-----------
+Create pipenv and install pre-commit hooks
+
+    pipenv --python 3.8
+    pipenv install
+    pre-commit install
+
+when committing pre-commit will run checks, to run checks manually use:
+
+    pre-commit run -a
+
+
 License
 -------
 * Released under MIT License
