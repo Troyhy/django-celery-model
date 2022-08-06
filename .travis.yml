@@ -4,29 +4,29 @@ dist: focal
 sudo: true
 matrix:
   include:
-    - env: TOX_ENV=py38 DJANGO=3.1
+    - env: TOX_ENV=py38-django31
       python: 3.8
-    - env: TOX_ENV=py39 DJANGO=3.1
+    - env: TOX_ENV=py39-django31
       python: 3.9
-    - env: TOX_ENV=py310 DJANGO=3.1
+    - env: TOX_ENV=py310-django31
       python: 3.10
-    - env: TOX_ENV=py38 DJANGO=3.2
+    - env: TOX_ENV=py38-django32
       python: 3.8
-    - env: TOX_ENV=py39 DJANGO=3.2
+    - env: TOX_ENV=py39-django32
       python: 3.9
-    - env: TOX_ENV=py310 DJANGO=3.2
+    - env: TOX_ENV=py310-django32
       python: 3.10
-    - env: TOX_ENV=py38 DJANGO=4.0
+    - env: TOX_ENV=py38-django40
       python: 3.8
-    - env: TOX_ENV=py39 DJANGO=4.0
+    - env: TOX_ENV=py39-django40
       python: 3.9
-    - env: TOX_ENV=py310 DJANGO=4.0
+    - env: TOX_ENV=py310-django40
       python: 3.10
-    - env: TOX_ENV=py38 DJANGO=4.1
+    - env: TOX_ENV=py38-django41
       python: 3.8
-    - env: TOX_ENV=py39 DJANGO=4.1
+    - env: TOX_ENV=py39-django41
       python: 3.9
-    - env: TOX_ENV=py310 DJANGO=4.1
+    - env: TOX_ENV=py310-django41
       python: 3.10
 
 
