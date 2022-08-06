@@ -1,6 +1,5 @@
 <!-- [![Build Status](https://travis-ci.org/thenewguy/django-celery-model.svg?branch=production)](https://travis-ci.org/thenewguy/django-celery-model) -->
-[![Build Status](https://app.travis-ci.com/Troyhy/django-celery-model.svg?branch=devel)](https://app.travis-ci.com/github/Troyhy/django-celery-mode)
-
+[![Build Status](https://app.travis-ci.com/Troyhy/django-celery-model.svg?branch=devel)](https://app.travis-ci.com/github/Troyhy/django-celery-model)
 [django-celery-model](https://github.com/mback2k/django-celery-model) is an
 extension to [Celery](https://github.com/celery/celery) which adds support
 for tracking Celery tasks assigned to Django model instances.
@@ -14,6 +13,15 @@ Install the latest version from pypi.python.org:
 Install the development version by cloning the source from github.com:
 
     pip install git+https://github.com/Troyhy/django-celery-model.git
+
+Tested with following combinations:
+
+| Tests    | py38 | py39   | py310 |
+|----------|------|--------|-------|
+| django31 | ✔    | ✔      | ✔     |
+| django32 | ✔    | ✔      | ✔     |
+| django40 | ✔    | ✔      | ✔     |
+| django41 | ✔    | ✔      | ✔     |
 
 Configuration
 -------------
@@ -103,8 +111,8 @@ when committing pre-commit will run checks, to run checks manually use:
 
     pre-commit run -a
 
-
 License
 -------
+
 * Released under MIT License
 * Copyright (c) 2014-2019 Marc Hoersken <info@marc-hoersken.de>

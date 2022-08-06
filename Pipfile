@@ -14,7 +14,7 @@ tox-docker = "*"
 pre-commit = "*"
 
 [packages]
-django = ">=1.11,<4.1"
+django = ">=1.11,<4.2"
 celery = {extras = ["redis"],version = ">=4.2"}
 
 

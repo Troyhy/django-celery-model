@@ -4,11 +4,29 @@ dist: focal
 sudo: true
 matrix:
   include:
-    - env: TOX_ENV=py38
+    - env: TOX_ENV=py38 DJANGO=3.1
       python: 3.8
-    - env: TOX_ENV=py39
+    - env: TOX_ENV=py39 DJANGO=3.1
       python: 3.9
-    - env: TOX_ENV=py310
+    - env: TOX_ENV=py310 DJANGO=3.1
+      python: 3.10
+    - env: TOX_ENV=py38 DJANGO=3.2
+      python: 3.8
+    - env: TOX_ENV=py39 DJANGO=3.2
+      python: 3.9
+    - env: TOX_ENV=py310 DJANGO=3.2
+      python: 3.10
+    - env: TOX_ENV=py38 DJANGO=4.0
+      python: 3.8
+    - env: TOX_ENV=py39 DJANGO=4.0
+      python: 3.9
+    - env: TOX_ENV=py310 DJANGO=4.0
+      python: 3.10
+    - env: TOX_ENV=py38 DJANGO=4.1
+      python: 3.8
+    - env: TOX_ENV=py39 DJANGO=4.1
+      python: 3.9
+    - env: TOX_ENV=py310 DJANGO=4.1
       python: 3.10
 
 
