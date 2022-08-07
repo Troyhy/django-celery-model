@@ -105,6 +105,9 @@ class ModelTaskMeta(models.Model):
     object_id = models.IntegerField(db_index=True)
     content_object = GenericForeignKey()
     task_id = models.CharField(max_length=255, db_index=True)
+    task_name = models.CharField(
+        max_length=255, db_index=True, null=True, blank=True
+    )
     state = models.PositiveIntegerField(
         choices=STATES, default=ModelTaskMetaState.PENDING
     )
@@ -114,7 +117,11 @@ class ModelTaskMeta(models.Model):
     objects = ModelTaskMetaManager()
 
     def __str__(self):
-        return '%s: %s' % (self.task_id, dict(self.STATES)[self.state])
+        return '%s %s: %s' % (
+            self.task_name,
+            self.task_id,
+            dict(self.STATES)[self.state],
+        )
 
     @property
     def result(self):
@@ -224,11 +231,15 @@ class TaskMixin(models.Model):
         else:
             task_id = kwargs['task_id'] = uuid()
         forget_if_ready(AsyncResult(task_id))
+        task_name = task.__name__ if hasattr(task, "__name__") else None
         try:
             taskmeta = ModelTaskMeta.objects.get(task_id=task_id)
             taskmeta.content_object = self
+            taskmeta.task_name = task_name
         except ModelTaskMeta.DoesNotExist:
-            taskmeta = ModelTaskMeta(task_id=task_id, content_object=self)
+            taskmeta = ModelTaskMeta(
+                task_id=task_id, content_object=self, task_name=task_name
+            )
         taskmeta.save()
         return task.apply_async(*args, **kwargs)
 
@@ -237,6 +248,9 @@ class TaskMixin(models.Model):
 
     def get_task_result(self, task_id):
         return self.tasks.get(task_id=task_id).result
+
+    def filter_tasks_by_name(self, task_name):
+        return self.tasks.filter(task_name=task_name)
 
     def clear_task_results(self):
         for task_result in self.get_task_results():

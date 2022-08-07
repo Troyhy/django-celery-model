@@ -110,3 +110,21 @@ class TestAppCeleryTests(CeleryTestCase):
         taskmeta.refresh_from_db()
         self.assertLess(updated_at, taskmeta.updated)
         self.assertLess(taskmeta.updated, timezone.now())
+
+    def test_task_name(self):
+        jpeg = JPEGFile.objects.create(
+            file=File(
+                open(finders.find('testapp/flower.jpg'), 'rb'),
+                name='flower.jpg',
+            )
+        )
+        result = jpeg.apply_async(calculate_etag, [jpeg.pk])
+        task_name = calculate_etag.__name__
+        jpeg.refresh_from_db()
+        taskmeta = jpeg.tasks.filter(task_id=result.id).first()
+        self.assertTrue(taskmeta)
+        self.assertTrue(taskmeta.task_name == task_name)
+
+        tasks_by_name = jpeg.filter_tasks_by_name(task_name)
+        self.assertEqual(1, tasks_by_name.count())
+        self.assertEqual(taskmeta, tasks_by_name.first())

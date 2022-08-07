@@ -79,6 +79,10 @@ Handle asynchronous task results for your Django model instance:
     mymodel.clear_task_results()
     mymodel.clear_task_result(task_id)
 
+Filter ModelTaskMeta objects by task name
+
+    mymodel.filter_tasks_by_name('celery_task_name')
+
 Filter your Django model based upon asynchronous tasks:
 
     MyModel.objects.with_tasks()
