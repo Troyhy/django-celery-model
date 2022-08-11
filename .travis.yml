@@ -29,6 +29,9 @@ matrix:
     - env: TOX_ENV=py310-django41
       python: 3.10
 
+branches:
+  only:
+  - production
 
 install:
   - "pip install -U pip"
