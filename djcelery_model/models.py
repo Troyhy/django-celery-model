@@ -42,6 +42,11 @@ class ModelTaskMetaState(object):
     FAILURE = 3
     SUCCESS = 4
 
+    RECEIVED = 10
+    REVOKED = 11
+    REJECTED = 12
+    IGNORED = 13
+
     @classmethod
     def lookup(cls, state):
         return getattr(cls, state)
@@ -99,6 +104,10 @@ class ModelTaskMeta(models.Model):
         (ModelTaskMetaState.RETRY, 'RETRY'),
         (ModelTaskMetaState.FAILURE, 'FAILURE'),
         (ModelTaskMetaState.SUCCESS, 'SUCCESS'),
+        (ModelTaskMetaState.RECEIVED, 'RECEIVED'),
+        (ModelTaskMetaState.REVOKED, 'REVOKED'),
+        (ModelTaskMetaState.REJECTED, 'REJECTED'),
+        (ModelTaskMetaState.IGNORED, 'IGNORED'),
     )
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
