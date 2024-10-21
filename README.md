@@ -16,12 +16,14 @@ Install the development version by cloning the source from github.com:
 
 Tested with following combinations:
 
-| Tests    | py38 | py39   | py310 |
-|----------|------|--------|-------|
-| django31 | ✔    | ✔      | ✔     |
-| django32 | ✔    | ✔      | ✔     |
-| django40 | ✔    | ✔      | ✔     |
-| django41 | ✔    | ✔      | ✔     |
+| Tests    | py310 | py311 | py312 |
+|----------|-------|-------|-------|
+| django31 | ✔     | ✔     | ✔     |
+| django32 | ✔     | ✔     | ✔     |
+| django40 | ✔     | ✔     | ✔     |
+| django41 | ✔     | ✔     | ✔     |
+| django42 | ✔     | ✔     | ✔     |
+| django52 | ✔     | ✔     | ✔     |
 
 Configuration
 -------------
