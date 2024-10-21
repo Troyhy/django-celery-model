@@ -1,6 +1,6 @@
 <!-- [![Build Status](https://travis-ci.org/thenewguy/django-celery-model.svg?branch=production)](https://travis-ci.org/thenewguy/django-celery-model) -->
-[![Build Status](https://app.travis-ci.com/Troyhy/django-celery-model.svg?branch=devel)](https://app.travis-ci.com/github/Troyhy/django-celery-model)
-[django-celery-model](https://github.com/mback2k/django-celery-model) is an
+[![Build Status](https://app.travis-ci.com/Troyhy/django-celery-model.svg?branch=production)](https://app.travis-ci.com/github/Troyhy/django-celery-model)
+[django-celery-model](https://github.com/Troyhy/django-celery-model) is an
 extension to [Celery](https://github.com/celery/celery) which adds support
 for tracking Celery tasks assigned to Django model instances.
 
@@ -16,14 +16,12 @@ Install the development version by cloning the source from github.com:
 
 Tested with following combinations:
 
-| Tests    | py310 | py311 | py312 |
-|----------|-------|-------|-------|
-| django31 | ✔     | ✔     | ✔     |
-| django32 | ✔     | ✔     | ✔     |
-| django40 | ✔     | ✔     | ✔     |
-| django41 | ✔     | ✔     | ✔     |
-| django42 | ✔     | ✔     | ✔     |
-| django52 | ✔     | ✔     | ✔     |
+| Tests      | py310  | py311  | py312   |
+|------------|--------|--------|---------|
+| django40   | ✔      | ✔      | ✔       |
+| django41   | ✔      | ✔      | ✔       |
+| django42   | ✔      | ✔      | ✔       |
+| django52   | ✖      | ✖      | ✖       |
 
 Configuration
 -------------
@@ -109,7 +107,7 @@ Developing
 -----------
 Create pipenv and install pre-commit hooks
 
-    pipenv --python 3.8
+    pipenv --python 3.12
     pipenv install
     pre-commit install
 

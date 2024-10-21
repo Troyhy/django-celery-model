@@ -10,16 +10,16 @@ matrix:
       python: 3.10
     - env: TOX_ENV=py310-django42
       python: 3.10
-    - env: TOX_ENV=py310-django52
-      python: 3.10
+#    - env: TOX_ENV=py310-django52
+#      python: 3.10
     - env: TOX_ENV=py312-django40
       python: 3.12
     - env: TOX_ENV=py312-django41
       python: 3.12
     - env: TOX_ENV=py312-django42
       python: 3.12
-    - env: TOX_ENV=py312-django52
-      python: 3.12
+#    - env: TOX_ENV=py312-django52
+#      python: 3.12
 
 branches:
   only:
