@@ -1,32 +1,16 @@
 language: python
 cache: pip
-dist: focal
+dist: jammy
 sudo: true
 matrix:
   include:
-    - env: TOX_ENV=py38-django31
-      python: 3.8
-    - env: TOX_ENV=py39-django31
-      python: 3.9
-    - env: TOX_ENV=py310-django31
-      python: 3.10
-    - env: TOX_ENV=py38-django32
-      python: 3.8
-    - env: TOX_ENV=py39-django32
-      python: 3.9
-    - env: TOX_ENV=py310-django32
-      python: 3.10
-    - env: TOX_ENV=py38-django40
-      python: 3.8
-    - env: TOX_ENV=py39-django40
-      python: 3.9
     - env: TOX_ENV=py310-django40
       python: 3.10
-    - env: TOX_ENV=py38-django41
-      python: 3.8
-    - env: TOX_ENV=py39-django41
-      python: 3.9
     - env: TOX_ENV=py310-django41
+      python: 3.10
+    - env: TOX_ENV=py310-django42
+      python: 3.10
+    - env: TOX_ENV=py310-django52
       python: 3.10
 
 branches:
